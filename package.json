@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "keywords": [],
-  "author": "Felix Khafizov",
+  "author": "Felix Khafizov <f_khafizov@protonmail.com>",
   "license": "MIT",
   "repository": "evilmartians/astro-typedoc",
   "sideEffects": false,
