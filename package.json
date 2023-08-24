@@ -58,7 +58,7 @@
   ],
   "size-limit": [
     {
-      "import": "{ }",
+      "import": "{ astroTypedoc }",
       "limit": "0 B"
     }
   ],
