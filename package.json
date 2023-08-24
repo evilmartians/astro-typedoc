@@ -48,9 +48,6 @@
   "eslintConfig": {
     "extends": "@logux/eslint-config"
   },
-  "eslintIgnore": [
-    "**/errors.ts"
-  ],
   "prettier": {
     "arrowParens": "avoid",
     "jsxSingleQuote": false,
