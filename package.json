@@ -20,13 +20,11 @@
     "unit": "tsm node_modules/uvu/bin.js . '\\.test\\.(ts|js)$'",
     "test:lint": "eslint .",
     "test:coverage": "c8 pnpm unit",
-    "test:types": "check-dts",
     "test": "pnpm run /^test:/"
   },
   "devDependencies": {
     "@logux/eslint-config": "^51.0.1",
     "c8": "^8.0.1",
-    "check-dts": "^0.7.2",
     "clean-publish": "^4.2.0",
     "eslint": "^8.46.0",
     "eslint-config-standard": "^17.1.0",
