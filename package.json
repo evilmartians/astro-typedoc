@@ -46,7 +46,7 @@
     "check-coverage": true
   },
   "eslintConfig": {
-    "extends": "@logux/eslint-config"
+    "extends": "@logux/eslint-config/esm"
   },
   "prettier": {
     "arrowParens": "avoid",
