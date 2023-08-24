@@ -5,7 +5,7 @@
   "keywords": [],
   "author": "Felix Khafizov",
   "license": "MIT",
-  "repository": "ai/NAME",
+  "repository": "evilmartians/astro-typedoc",
   "sideEffects": false,
   "engines": {
     "node": "^16.0.0 || ^18.0.0 || >=20.0.0"
