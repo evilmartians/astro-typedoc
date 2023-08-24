@@ -59,7 +59,7 @@
   "size-limit": [
     {
       "import": "{ astroTypedoc }",
-      "limit": "0 B"
+      "limit": "10000 B"
     }
   ],
   "prettier": {
