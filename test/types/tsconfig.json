@@ -1,6 +1,7 @@
 {
+  "extends": ["../../tsconfig.json"],
   "compilerOptions": {
-    "rootDir": "./",
+    "rootDir": ".",
     "target": "es2018",
     "module": "esnext",
     "moduleResolution": "node",
