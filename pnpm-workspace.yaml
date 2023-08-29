@@ -1,0 +1,5 @@
+packages:
+  # Astro site for stub project
+  - 'test/website-types'
+  # Astro site for nanostores project
+  - 'test/website-nanostores'
