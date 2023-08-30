@@ -56,5 +56,8 @@
   },
   "clean-publish": {
     "cleanDocs": true
+  },
+  "dependencies": {
+    "typedoc": "^0.25.0"
   }
 }
