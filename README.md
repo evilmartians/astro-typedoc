@@ -15,3 +15,4 @@ There are 3 subfolders is `test/` folder.
 `website-types` and `website-nanostores` are Astro sites with enabled integration.
 
 `pnpm run build` to build projects, works for both of them.
+`pnpm start` to start a development server for a website
