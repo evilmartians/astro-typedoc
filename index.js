@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import { Application } from 'typedoc'
 
-const page = ({ title }) => `
+const pageTemplate = ({ title }) => `
 ---
 ---
 <html lang="en">
@@ -14,13 +14,17 @@ const page = ({ title }) => `
 </html>
 `
 
-export async function generateApiDocs({ entryPoints, tsconfig }) {
+export async function generateApiDocs({
+  entryPoints,
+  pagesDirectory = 'src/pages/docs',
+  tsconfig
+}) {
   let types = await getTypes({ entryPoints, tsconfig })
 
   for (let type of types) {
     await writeFile(
-      `src/pages/docs/${type.name}.astro`,
-      page({ title: type.name })
+      `${pagesDirectory}/${type.name}.astro`,
+      pageTemplate({ title: type.name })
     )
   }
 }
