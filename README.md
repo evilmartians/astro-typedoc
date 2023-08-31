@@ -11,13 +11,13 @@ There are 3 subfolders is `test/` folder.
 3. `website-nanostores` - a sample site which is generated from `nanostores` package.
    [`nanostores`](https://github.com/nanostores/nanostores) repository needs to be cloned locally.
 
-Folder structure should look like this:
+   Folder structure should look like this:
 
-```
-.
-├── astro-typedoc
-└── nanostores
-```
+   ```
+   .
+   ├── astro-typedoc
+   └── nanostores
+   ```
 
 ### Building sites
 
