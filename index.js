@@ -1,42 +1,31 @@
-import { writeFile } from 'node:fs/promises'
-import { Application } from 'typedoc'
-
-const pageTemplate = ({ title }) => `
----
----
-<html lang="en">
-  <head>
-    <title>${title}</title>
-  </head>
-  <body>
-    <h1>This page is about ${title}</h1>
-  </body>
-</html>
-`
+import { Application, TSConfigReader } from 'typedoc'
 
 export async function generateApiDocs({
   entryPoints,
   pagesDirectory = 'src/pages/docs',
   tsconfig
 }) {
-  let types = await getTypes({ entryPoints, tsconfig })
+  let app = new Application()
 
-  for (let type of types) {
-    await writeFile(
-      `${pagesDirectory}/${type.name}.astro`,
-      pageTemplate({ title: type.name })
-    )
-  }
-}
+  app.options.addReader(new TSConfigReader())
 
-async function getTypes({ entryPoints = [], tsconfig }) {
-  let app = await Application.bootstrap({
+  await app.bootstrapWithPlugins({
     entryPoints,
+    excludeInternal: true,
+    excludePrivate: true,
+    excludeProtected: true,
+    githubPages: false,
+    hideBreadcrumbs: true,
+    hideInPageTOC: true,
+    hideKindPrefix: true,
+    hidePageHeader: true,
+    hidePageTitle: true,
+    plugin: ['typedoc-plugin-markdown'],
+    readme: 'none',
     tsconfig
   })
 
   let project = await app.convert()
-  let types = project.children
 
-  return types
+  await app.generateDocs(project, pagesDirectory)
 }
