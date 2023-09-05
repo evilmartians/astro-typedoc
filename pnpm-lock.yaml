@@ -9,8 +9,11 @@ importers:
   .:
     dependencies:
       typedoc:
-        specifier: ^0.25.0
-        version: 0.25.0(typescript@5.1.6)
+        specifier: ^0.24.8
+        version: 0.24.8(typescript@5.1.6)
+      typedoc-plugin-markdown:
+        specifier: 4.0.0-next.20
+        version: 4.0.0-next.20(typedoc@0.24.8)
     devDependencies:
       '@logux/eslint-config':
         specifier: ^51.0.1
@@ -4195,12 +4198,20 @@ packages:
       is-typed-array: 1.1.12
     dev: true
 
-  /typedoc@0.25.0(typescript@5.1.6):
-    resolution: {integrity: sha512-FvCYWhO1n5jACE0C32qg6b3dSfQ8f2VzExnnRboowHtqUD6ARzM2r8YJeZFYXhcm2hI4C2oCRDgNPk/yaQUN9g==}
-    engines: {node: '>= 16'}
+  /typedoc-plugin-markdown@4.0.0-next.20(typedoc@0.24.8):
+    resolution: {integrity: sha512-mQoLUSk6KLPMv1zpcTk43h8+8aD+T65qPh99/umSsczd1yTOyZiA0h0kAlsrZrAM8SWoJEn/fZWgV3JMR3Bb4Q==}
+    peerDependencies:
+      typedoc: '>=0.24.0'
+    dependencies:
+      typedoc: 0.24.8(typescript@5.1.6)
+    dev: false
+
+  /typedoc@0.24.8(typescript@5.1.6):
+    resolution: {integrity: sha512-ahJ6Cpcvxwaxfu4KtjA8qZNqS43wYt6JL27wYiIgl1vd38WW/KWX11YuAeZhuz9v+ttrutSsgK+XO1CjL1kA3w==}
+    engines: {node: '>= 14.14'}
     hasBin: true
     peerDependencies:
-      typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x || 5.2.x
+      typescript: 4.6.x || 4.7.x || 4.8.x || 4.9.x || 5.0.x || 5.1.x
     dependencies:
       lunr: 2.3.9
       marked: 4.3.0
