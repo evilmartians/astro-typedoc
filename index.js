@@ -1,5 +1,9 @@
 import { writeFile } from 'node:fs/promises'
+import { dirname, resolve } from 'path'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
+import { fileURLToPath } from 'url'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 function onRendererPageEnd(event) {
   if (!event.contents) {
@@ -46,6 +50,7 @@ export async function generateApiDocs({
   tsconfig
 }) {
   let app = await Application.bootstrapWithPlugins({
+    basePath: baseUrl,
     entryPoints,
     excludeInternal: true,
     excludePrivate: true,
@@ -56,8 +61,9 @@ export async function generateApiDocs({
     // hideKindPrefix: true,
     hidePageHeader: true,
     hidePageTitle: true,
-    plugin: ['typedoc-plugin-markdown'],
+    plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
+    theme: 'custom-markdown-theme',
     tsconfig
   })
 
