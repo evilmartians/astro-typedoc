@@ -19,7 +19,7 @@ layout: '../../../layouts/DocLayout.astro'
 }
 
 function getNavigationFromProject(baseUrl = '', project) {
-  let baseUrlWithoutTrailingSlash = baseUrl.replace('/$', '')
+  let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
 
   let nav = project.groups
     .map(group => {
@@ -39,7 +39,7 @@ function getNavigationFromProject(baseUrl = '', project) {
 }
 
 export async function generateApiDocs({
-  baseUrl = '/docs',
+  baseUrl = '/docs/',
   entryPoints,
   pagesDirectory = 'src/pages/docs',
   tsconfig
