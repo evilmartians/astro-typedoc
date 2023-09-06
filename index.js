@@ -13,7 +13,8 @@ function onRendererPageEnd(event) {
 title: '${event.model.name}'
 layout: '../../../layouts/DocLayout.astro'
 ---
-    `
+
+`
 
   event.contents = frontmatter + event.contents
 }
