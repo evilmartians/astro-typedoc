@@ -44,12 +44,7 @@ export async function generateApiDocs({
   pagesDirectory = 'src/pages/docs',
   tsconfig
 }) {
-  let app = new Application()
-
-  app.options.addReader(new TSConfigReader())
-  app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
-
-  await app.bootstrapWithPlugins({
+  let app = await Application.bootstrapWithPlugins({
     entryPoints,
     excludeInternal: true,
     excludePrivate: true,
@@ -57,13 +52,16 @@ export async function generateApiDocs({
     githubPages: false,
     hideBreadcrumbs: true,
     hideInPageTOC: true,
-    hideKindPrefix: true,
+    // hideKindPrefix: true,
     hidePageHeader: true,
     hidePageTitle: true,
     plugin: ['typedoc-plugin-markdown'],
     readme: 'none',
     tsconfig
   })
+
+  app.options.addReader(new TSConfigReader())
+  app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
 
   let project = await app.convert()
 
