@@ -1,0 +1,19 @@
+---
+import nav from '../nav.json'
+---
+
+{
+  nav?.length && (
+    <nav class="navigation">
+      {nav.map(item => {
+        return <a href={item.url}>{item.title}</a>
+      })}
+    </nav>
+  )
+}
+<style>
+  .navigation {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
