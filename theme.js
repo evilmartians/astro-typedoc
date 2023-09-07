@@ -25,14 +25,17 @@ class CustomMarkdownThemeContext extends MarkdownThemeRenderContext {
       return url
     }
 
-    let filePath = path.parse(url)
-    let [, anchor] = filePath.base.split('#')
     let basePath = this.options.getValue('basePath')
+    let basePathParsed = path.parse(basePath)
+    let baseUrl = basePath.replace(basePathParsed.root, '/')
+    let filePathParsed = path.parse(url)
+    let directory = filePathParsed.dir.split(path.sep).join('/')
+    let [, anchor] = filePathParsed.base.split('#')
 
-    let constructedUrl = typeof basePath === 'string' ? basePath : ''
+    let constructedUrl = typeof baseUrl === 'string' ? baseUrl : ''
     constructedUrl += '/'
-    constructedUrl += filePath.dir.length > 0 ? `${filePath.dir}/` : ''
-    constructedUrl += filePath.name
+    constructedUrl += directory.length > 0 ? `${directory}/` : ''
+    constructedUrl += filePathParsed.name
     constructedUrl += anchor && anchor.length > 0 ? `#${slug(anchor)}` : ''
 
     return constructedUrl
