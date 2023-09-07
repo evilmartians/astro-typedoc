@@ -58,7 +58,6 @@ export async function generateApiDocs({
     githubPages: false,
     hideBreadcrumbs: true,
     hideInPageTOC: true,
-    // hideKindPrefix: true,
     hidePageHeader: true,
     hidePageTitle: true,
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
