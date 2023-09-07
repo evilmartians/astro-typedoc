@@ -5,7 +5,7 @@ import {
   MarkdownThemeRenderContext
 } from 'typedoc-plugin-markdown'
 
-const externalLinkRegex = /^(http|ftp|mailto)s?:\/\//
+const externalLinkRegex = /^(http|ftp|mailto|tel)s?:\/\//
 
 export function load(app) {
   app.renderer.defineTheme('custom-markdown-theme', CustomMarkdownTheme)
