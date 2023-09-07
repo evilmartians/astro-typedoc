@@ -2,14 +2,15 @@
 import nav from '../nav.json'
 ---
 
-<nav class="navigation">
-  {
-    nav &&
-      nav.map(item => {
+{
+  nav?.length && (
+    <nav class="navigation">
+      {nav.map(item => {
         return <a href={item.url}>{item.title}</a>
-      })
-  }
-</nav>
+      })}
+    </nav>
+  )
+}
 <style>
   .navigation {
     display: flex;

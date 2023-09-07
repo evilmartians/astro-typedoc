@@ -26,7 +26,7 @@ layout: '../../../layouts/DocLayout.astro'
 function getNavigationFromProject(baseUrl = '', project) {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
 
-  let nav = project.groups
+  let nav = project?.groups
     .map(group => {
       return group.children.map(groupChild => {
         return {
@@ -40,7 +40,7 @@ function getNavigationFromProject(baseUrl = '', project) {
     })
     .flat()
 
-  return nav
+  return nav ?? []
 }
 
 export async function generateApiDocs({
