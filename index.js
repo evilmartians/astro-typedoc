@@ -1,5 +1,5 @@
 import { writeFile } from 'node:fs/promises'
-import { dirname, resolve } from 'path'
+import { dirname, resolve, sep } from 'node:path'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
 import { fileURLToPath } from 'url'
 
@@ -43,23 +43,36 @@ function getNavigationFromProject(baseUrl = '', project) {
   return nav ?? []
 }
 
-export async function generateApiDocs({
+const typedocConfig = {
+  excludeInternal: true,
+  excludePrivate: true,
+  excludeProtected: true,
+  githubPages: false
+}
+
+const markdownPluginConfig = {
+  hideBreadcrumbs: true,
+  hideInPageTOC: true,
+  hidePageHeader: true,
+  hidePageTitle: true
+}
+
+const removeTrailingSlash = (pathString = '') =>
+  pathString.endsWith(sep)
+    ? pathString.slice(0, pathString.length - 1)
+    : pathString
+
+export default async function initAstroTypedoc({
   baseUrl = '/docs/',
   entryPoints,
   pagesDirectory = 'src/pages/docs',
   tsconfig
 }) {
   let app = await Application.bootstrapWithPlugins({
+    ...typedocConfig,
+    ...markdownPluginConfig,
     basePath: baseUrl,
     entryPoints,
-    excludeInternal: true,
-    excludePrivate: true,
-    excludeProtected: true,
-    githubPages: false,
-    hideBreadcrumbs: true,
-    hideInPageTOC: true,
-    hidePageHeader: true,
-    hidePageTitle: true,
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
     theme: 'custom-markdown-theme',
@@ -69,11 +82,21 @@ export async function generateApiDocs({
   app.options.addReader(new TSConfigReader())
   app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
 
-  let project = await app.convert()
+  let getReflections = async () => await app.convert()
+  let generateDocs = async project =>
+    await app.generateDocs(project, pagesDirectory)
+  let generateNavigationJSON = async (project, outputFolder) => {
+    let navigation = getNavigationFromProject(baseUrl, project)
 
-  await app.generateDocs(project, pagesDirectory)
+    await writeFile(
+      `${removeTrailingSlash(outputFolder)}/nav.json`,
+      JSON.stringify(navigation)
+    )
+  }
 
-  let navigation = getNavigationFromProject(baseUrl, project)
-
-  await writeFile('src/nav.json', JSON.stringify(navigation))
+  return {
+    generateDocs,
+    generateNavigationJSON,
+    getReflections
+  }
 }
