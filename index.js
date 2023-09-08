@@ -1,11 +1,11 @@
 import { writeFile } from 'node:fs/promises'
-import { dirname, resolve } from "node:path"
-import { fileURLToPath } from "node:url"
+import { dirname, resolve, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-function onRendererPageEnd(event) {
+const onRendererPageEnd = event => {
   if (!event.contents) {
     return
   } else if (/README\.md$/.test(event.url)) {
@@ -23,7 +23,7 @@ layout: '../../../layouts/DocLayout.astro'
   event.contents = frontmatter + event.contents
 }
 
-function getNavigationFromProject(baseUrl = '', project) {
+const getNavigationFromProject = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
 
   let nav = project?.groups
@@ -43,23 +43,35 @@ function getNavigationFromProject(baseUrl = '', project) {
   return nav ?? []
 }
 
-export async function generateApiDocs({
+const typedocConfig = {
+  excludeInternal: true,
+  excludePrivate: true,
+  excludeProtected: true,
+  githubPages: false
+}
+
+const markdownPluginConfig = {
+  hideBreadcrumbs: true,
+  hideInPageTOC: true,
+  hidePageHeader: true,
+  hidePageTitle: true
+}
+
+const removeTrailingSlash = (pathString = '') =>
+  pathString.endsWith(sep)
+    ? pathString.slice(0, pathString.length - 1)
+    : pathString
+
+export const initAstroTypedoc = async ({
   baseUrl = '/docs/',
   entryPoints,
-  pagesDirectory = 'src/pages/docs',
   tsconfig
-}) {
+}) => {
   let app = await Application.bootstrapWithPlugins({
+    ...typedocConfig,
+    ...markdownPluginConfig,
     basePath: baseUrl,
     entryPoints,
-    excludeInternal: true,
-    excludePrivate: true,
-    excludeProtected: true,
-    githubPages: false,
-    hideBreadcrumbs: true,
-    hideInPageTOC: true,
-    hidePageHeader: true,
-    hidePageTitle: true,
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
     theme: 'custom-markdown-theme',
@@ -69,11 +81,23 @@ export async function generateApiDocs({
   app.options.addReader(new TSConfigReader())
   app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
 
-  let project = await app.convert()
+  let getReflections = async () => await app.convert()
+  let generateDocs = async (project, pagesDirectory = 'src/pages/docs') =>
+    await app.generateDocs(project, pagesDirectory)
+  let generateNavigationJSON = async (project, outputFolder) => {
+    let navigation = getNavigationFromProject(baseUrl, project)
 
-  await app.generateDocs(project, pagesDirectory)
+    await writeFile(
+      `${removeTrailingSlash(outputFolder)}/nav.json`,
+      JSON.stringify(navigation)
+    )
+  }
 
-  let navigation = getNavigationFromProject(baseUrl, project)
-
-  await writeFile('src/nav.json', JSON.stringify(navigation))
+  return {
+    generateDocs,
+    generateNavigationJSON,
+    getReflections
+  }
 }
+
+export default initAstroTypedoc
