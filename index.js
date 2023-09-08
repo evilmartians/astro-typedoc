@@ -1,7 +1,7 @@
 import { writeFile } from 'node:fs/promises'
 import { dirname, resolve, sep } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
-import { fileURLToPath } from 'url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

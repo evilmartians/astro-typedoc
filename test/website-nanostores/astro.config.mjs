@@ -1,6 +1,6 @@
 import { defineConfig } from 'astro/config'
 import { dirname, resolve } from 'node:path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 
 import initAstroTypedoc from '../../index.js'
 
