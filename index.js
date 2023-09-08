@@ -65,7 +65,6 @@ const removeTrailingSlash = (pathString = '') =>
 export default async function initAstroTypedoc({
   baseUrl = '/docs/',
   entryPoints,
-  pagesDirectory = 'src/pages/docs',
   tsconfig
 }) {
   let app = await Application.bootstrapWithPlugins({
@@ -83,7 +82,7 @@ export default async function initAstroTypedoc({
   app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
 
   let getReflections = async () => await app.convert()
-  let generateDocs = async project =>
+  let generateDocs = async (project, pagesDirectory = 'src/pages/docs') =>
     await app.generateDocs(project, pagesDirectory)
   let generateNavigationJSON = async (project, outputFolder) => {
     let navigation = getNavigationFromProject(baseUrl, project)
