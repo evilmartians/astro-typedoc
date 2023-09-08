@@ -2,10 +2,11 @@ import { writeFile } from 'node:fs/promises'
 import { dirname, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
+import yaml from 'yaml'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const onRendererPageEnd = event => {
+const onRendererPageEnd = frontmatter => event => {
   if (!event.contents) {
     return
   } else if (/README\.md$/.test(event.url)) {
@@ -13,14 +14,14 @@ const onRendererPageEnd = event => {
     return
   }
 
-  let frontmatter = `---
+  let prepended = `---
 title: '${event.model.name}'
-layout: '../../../layouts/DocLayout.astro'
+${yaml.stringify(frontmatter)}
 ---
 
 `
 
-  event.contents = frontmatter + event.contents
+  event.contents = prepended + event.contents
 }
 
 const getNavigationFromProject = (baseUrl = '', project) => {
@@ -79,11 +80,17 @@ export const initAstroTypedoc = async ({
   })
 
   app.options.addReader(new TSConfigReader())
-  app.renderer.on(PageEvent.END, event => onRendererPageEnd(event))
 
   let getReflections = async () => await app.convert()
-  let generateDocs = async (project, pagesDirectory = 'src/pages/docs') =>
-    await app.generateDocs(project, pagesDirectory)
+  let generateDocs = async ({
+    frontmatter,
+    outputFolder = 'src/pages/docs',
+    project
+  }) => {
+    app.renderer.on(PageEvent.END, onRendererPageEnd(frontmatter))
+
+    await app.generateDocs(project, outputFolder)
+  }
   let generateNavigationJSON = async (project, outputFolder) => {
     let navigation = getNavigationFromProject(baseUrl, project)
 
