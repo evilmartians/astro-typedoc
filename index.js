@@ -5,7 +5,7 @@ import { Application, PageEvent, TSConfigReader } from 'typedoc'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-function onRendererPageEnd(event) {
+const onRendererPageEnd = event => {
   if (!event.contents) {
     return
   } else if (/README\.md$/.test(event.url)) {
@@ -23,7 +23,7 @@ layout: '../../../layouts/DocLayout.astro'
   event.contents = frontmatter + event.contents
 }
 
-function getNavigationFromProject(baseUrl = '', project) {
+const getNavigationFromProject = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
 
   let nav = project?.groups
@@ -62,11 +62,11 @@ const removeTrailingSlash = (pathString = '') =>
     ? pathString.slice(0, pathString.length - 1)
     : pathString
 
-export default async function initAstroTypedoc({
+export const initAstroTypedoc = async ({
   baseUrl = '/docs/',
   entryPoints,
   tsconfig
-}) {
+}) => {
   let app = await Application.bootstrapWithPlugins({
     ...typedocConfig,
     ...markdownPluginConfig,
@@ -99,3 +99,5 @@ export default async function initAstroTypedoc({
     getReflections
   }
 }
+
+export default initAstroTypedoc
