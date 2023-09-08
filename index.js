@@ -14,14 +14,14 @@ const onRendererPageEnd = frontmatter => event => {
     return
   }
 
-  let prepended = `---
+  let prependix = `---
 title: '${event.model.name}'
 ${yaml.stringify(frontmatter)}
 ---
 
 `
 
-  event.contents = prepended + event.contents
+  event.contents = prependix + event.contents
 }
 
 const getNavigationFromProject = (baseUrl = '', project) => {
