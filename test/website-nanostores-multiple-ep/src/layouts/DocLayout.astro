@@ -1,0 +1,32 @@
+---
+import Sidebar from '../components/Sidebar.astro'
+
+const { frontmatter } = Astro.props
+const { title } = frontmatter
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="layout">
+      <Sidebar />
+      <main>
+        <h1>{title}</h1>
+        <article>
+          <slot />
+        </article>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .layout {
+    display: grid;
+    grid-template-columns: 25% 75%;
+  }
+</style>
