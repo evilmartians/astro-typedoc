@@ -3,11 +3,18 @@ import nav from '../nav.json'
 ---
 
 {
-  nav?.length && (
+  nav?.modules.length && (
     <nav class="navigation">
-      {nav.map(item => {
-        return <a href={item.url}>{item.title}</a>
-      })}
+      {nav.modules.map(mod => (
+        <div>
+          Module: {mod.name} <br />
+          {mod.items.map(modItem => (
+            <div>
+              <a href={modItem.url}>{modItem.title} </a>
+            </div>
+          ))}
+        </div>
+      ))}
     </nav>
   )
 }

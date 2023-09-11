@@ -27,24 +27,41 @@ ${objectToFrontmatter(frontmatterObject)}
   event.contents = prependix + event.contents
 }
 
-const getNavigationFromProject = (baseUrl = '', project) => {
+const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
+  let result = { type: 'flat' }
 
-  let nav = project?.groups
-    .map(group => {
-      return group.children.map(groupChild => {
-        return {
-          title: groupChild.name,
-          url: `${baseUrlWithoutTrailingSlash}/${groupChild.url}`.replace(
-            /\.md$/,
-            ''
-          )
-        }
-      })
+  let isGroupOfModules = group => group.title === 'Modules'
+  let reflectionToNavItem = reflection => {
+    return {
+      title: reflection.name,
+      url: `${baseUrlWithoutTrailingSlash}/${reflection.url}`.replace(
+        /\.md$/,
+        ''
+      )
+    }
+  }
+  let modulesGroupToNavigationGroup = module => ({
+    items: module.groups.flatMap(group =>
+      group.children.map(reflectionToNavItem)
+    ),
+    name: module.name
+  })
+
+  let navFromReflectionGroups = (groups, nav = {}) => {
+    groups.forEach(group => {
+      if (isGroupOfModules(group)) {
+        nav.type = 'modular'
+        nav.modules = group.children.map(modulesGroupToNavigationGroup)
+      } else {
+        nav.items = group.children.flatMap(reflectionToNavItem)
+      }
     })
-    .flat()
 
-  return nav ?? []
+    return nav
+  }
+
+  return navFromReflectionGroups(project.groups, result)
 }
 
 const typedocConfig = {
@@ -95,7 +112,7 @@ export const initAstroTypedoc = async ({
     await app.generateDocs(project, outputFolder)
   }
   let generateNavigationJSON = async (project, outputFolder) => {
-    let navigation = getNavigationFromProject(baseUrl, project)
+    let navigation = buildNavigationFromProjectReflection(baseUrl, project)
 
     await writeFile(
       `${removeTrailingSlash(outputFolder)}/nav.json`,

@@ -3,9 +3,9 @@ import nav from '../nav.json'
 ---
 
 {
-  nav?.length && (
+  nav?.items?.length && (
     <nav class="navigation">
-      {nav.map(item => {
+      {nav.items.map(item => {
         return <a href={item.url}>{item.title}</a>
       })}
     </nav>
