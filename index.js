@@ -2,11 +2,14 @@ import { writeFile } from 'node:fs/promises'
 import { dirname, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { Application, PageEvent, TSConfigReader } from 'typedoc'
-import yaml from 'yaml'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
+const objectToFrontmatter = (object = {}) =>
+  Object.entries(object)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join('\n')
 
-const onRendererPageEnd = frontmatter => event => {
+const onRendererPageEnd = frontmatterObject => event => {
   if (!event.contents) {
     return
   } else if (/README\.md$/.test(event.url)) {
@@ -16,7 +19,7 @@ const onRendererPageEnd = frontmatter => event => {
 
   let prependix = `---
 title: '${event.model.name}'
-${yaml.stringify(frontmatter)}
+${objectToFrontmatter(frontmatterObject)}
 ---
 
 `
