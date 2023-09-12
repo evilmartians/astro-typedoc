@@ -9,10 +9,9 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const astroTypedoc = await initAstroTypedoc({
   baseUrl: '/docs/',
   entryPoints: [
-    resolve(__dirname, '../../../nanostores/action/index.d.ts'),
-    resolve(__dirname, '../../../nanostores/atom/index.d.ts')
-  ],
-  tsconfig: resolve(__dirname, '../../../nanostores/tsconfig.json')
+    resolve(__dirname, '../../../nanostores/index.d.ts'),
+    resolve(__dirname, '../../../router/index.d.ts')
+  ]
 })
 
 const project = await astroTypedoc.getReflections()
