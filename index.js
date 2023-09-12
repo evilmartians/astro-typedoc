@@ -54,7 +54,10 @@ const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
         nav.type = 'modular'
         nav.modules = group.children.map(modulesGroupToNavigationGroup)
       } else {
-        nav.items = group.children.flatMap(reflectionToNavItem)
+        nav.items = nav?.items?.length ? nav.items : []
+        nav.items = nav.items.concat(
+          group.children.flatMap(reflectionToNavItem)
+        )
       }
     })
 
@@ -65,6 +68,7 @@ const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
 }
 
 const typedocConfig = {
+  excludeExternals: true,
   excludeInternal: true,
   excludePrivate: true,
   excludeProtected: true,
@@ -83,11 +87,14 @@ const removeTrailingSlash = (pathString = '') =>
     ? pathString.slice(0, pathString.length - 1)
     : pathString
 
-export const initAstroTypedoc = async ({
-  baseUrl = '/docs/',
-  entryPoints,
-  tsconfig
-}) => {
+export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
+  // Hack to make sure entrypoints will be loaded
+  await writeFile(
+    resolve(__dirname, './tsconfig.generic.json'),
+    JSON.stringify({
+      include: entryPoints
+    })
+  )
   let app = await Application.bootstrapWithPlugins({
     ...typedocConfig,
     ...markdownPluginConfig,
@@ -96,7 +103,7 @@ export const initAstroTypedoc = async ({
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
     theme: 'custom-markdown-theme',
-    tsconfig
+    tsconfig: resolve(__dirname, './tsconfig.generic.json')
   })
 
   app.options.addReader(new TSConfigReader())
