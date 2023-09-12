@@ -1,7 +1,13 @@
 import { writeFile } from 'node:fs/promises'
 import { dirname, resolve, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { Application, PageEvent, TSConfigReader } from 'typedoc'
+import {
+  Application,
+  Converter,
+  PageEvent,
+  ReflectionKind,
+  TSConfigReader
+} from 'typedoc'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const objectToFrontmatter = (object = {}) =>
@@ -67,6 +73,18 @@ const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
   return navFromReflectionGroups(project.groups, result)
 }
 
+const onDeclaration =
+  (entryPoints = []) =>
+  (context, reflection) => {
+    if (reflection.kind === ReflectionKind.Module) {
+      let matchingEntryPoint = entryPoints.find(
+        entryPoint => entryPoint.path === reflection.sources[0].fullFileName
+      )
+
+      reflection.name = matchingEntryPoint?.name ?? reflection.name
+    }
+  }
+
 const typedocConfig = {
   excludeExternals: true,
   excludeInternal: true,
@@ -92,14 +110,14 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
   await writeFile(
     resolve(__dirname, './tsconfig.generic.json'),
     JSON.stringify({
-      include: entryPoints
+      include: entryPoints.map(e => e.path)
     })
   )
   let app = await Application.bootstrapWithPlugins({
     ...typedocConfig,
     ...markdownPluginConfig,
     basePath: baseUrl,
-    entryPoints,
+    entryPoints: entryPoints.map(e => e.path),
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
     theme: 'custom-markdown-theme',
@@ -107,6 +125,10 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
   })
 
   app.options.addReader(new TSConfigReader())
+  app.converter.on(
+    Converter.EVENT_CREATE_DECLARATION,
+    onDeclaration(entryPoints)
+  )
 
   let getReflections = async () => await app.convert()
   let generateDocs = async ({
