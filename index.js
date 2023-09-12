@@ -110,6 +110,16 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
   await writeFile(
     resolve(__dirname, './tsconfig.generic.json'),
     JSON.stringify({
+      compilerOptions: {
+        baseUrl: '.',
+        paths: entryPoints.reduce((paths, { name, path }) => {
+          if (name) {
+            paths[name] = [path]
+          }
+
+          return paths
+        }, {})
+      },
       include: entryPoints.map(e => e.path)
     })
   )
