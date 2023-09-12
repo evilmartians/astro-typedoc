@@ -10,12 +10,12 @@ const astroTypedoc = await initAstroTypedoc({
   baseUrl: '/docs/',
   entryPoints: [
     {
-      path: resolve(__dirname, '../../../nanostores/index.d.ts'),
-      name: 'nanostores'
+      name: 'nanostores',
+      path: resolve(__dirname, '../../../nanostores/index.d.ts')
     },
     {
-      path: resolve(__dirname, '../../../router/index.d.ts'),
-      name: '@nanostores/router'
+      name: '@nanostores/router',
+      path: resolve(__dirname, '../../../router/index.d.ts')
     }
   ]
 })
