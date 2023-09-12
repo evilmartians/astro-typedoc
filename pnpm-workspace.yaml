@@ -3,3 +3,5 @@ packages:
   - 'test/website-types'
   # Astro site for nanostores project
   - 'test/website-nanostores'
+  # Astro site for nanostores project (multiple entrypoints)
+  - 'test/website-nanostores-multiple-ep'

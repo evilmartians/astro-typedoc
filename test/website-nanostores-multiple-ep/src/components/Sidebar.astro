@@ -1,0 +1,26 @@
+---
+import nav from '../nav.json'
+---
+
+{
+  nav?.modules.length && (
+    <nav class="navigation">
+      {nav.modules.map(mod => (
+        <div>
+          Module: {mod.name} <br />
+          {mod.items.map(modItem => (
+            <div>
+              <a href={modItem.url}>{modItem.title} </a>
+            </div>
+          ))}
+        </div>
+      ))}
+    </nav>
+  )
+}
+<style>
+  .navigation {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

@@ -27,27 +27,48 @@ ${objectToFrontmatter(frontmatterObject)}
   event.contents = prependix + event.contents
 }
 
-const getNavigationFromProject = (baseUrl = '', project) => {
+const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
+  let result = { type: 'flat' }
 
-  let nav = project?.groups
-    .map(group => {
-      return group.children.map(groupChild => {
-        return {
-          title: groupChild.name,
-          url: `${baseUrlWithoutTrailingSlash}/${groupChild.url}`.replace(
-            /\.md$/,
-            ''
-          )
-        }
-      })
+  let isGroupOfModules = group => group.title === 'Modules'
+  let reflectionToNavItem = reflection => {
+    return {
+      title: reflection.name,
+      url: `${baseUrlWithoutTrailingSlash}/${reflection.url}`.replace(
+        /\.md$/,
+        ''
+      )
+    }
+  }
+  let modulesGroupToNavigationGroup = module => ({
+    items: module.groups.flatMap(group =>
+      group.children.map(reflectionToNavItem)
+    ),
+    name: module.name
+  })
+
+  let navFromReflectionGroups = (groups, nav = {}) => {
+    groups.forEach(group => {
+      if (isGroupOfModules(group)) {
+        nav.type = 'modular'
+        nav.modules = group.children.map(modulesGroupToNavigationGroup)
+      } else {
+        nav.items = nav?.items?.length ? nav.items : []
+        nav.items = nav.items.concat(
+          group.children.flatMap(reflectionToNavItem)
+        )
+      }
     })
-    .flat()
 
-  return nav ?? []
+    return nav
+  }
+
+  return navFromReflectionGroups(project.groups, result)
 }
 
 const typedocConfig = {
+  excludeExternals: true,
   excludeInternal: true,
   excludePrivate: true,
   excludeProtected: true,
@@ -66,11 +87,14 @@ const removeTrailingSlash = (pathString = '') =>
     ? pathString.slice(0, pathString.length - 1)
     : pathString
 
-export const initAstroTypedoc = async ({
-  baseUrl = '/docs/',
-  entryPoints,
-  tsconfig
-}) => {
+export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
+  // Hack to make sure entrypoints will be loaded
+  await writeFile(
+    resolve(__dirname, './tsconfig.generic.json'),
+    JSON.stringify({
+      include: entryPoints
+    })
+  )
   let app = await Application.bootstrapWithPlugins({
     ...typedocConfig,
     ...markdownPluginConfig,
@@ -79,7 +103,7 @@ export const initAstroTypedoc = async ({
     plugin: ['typedoc-plugin-markdown', resolve(__dirname, './theme.js')],
     readme: 'none',
     theme: 'custom-markdown-theme',
-    tsconfig
+    tsconfig: resolve(__dirname, './tsconfig.generic.json')
   })
 
   app.options.addReader(new TSConfigReader())
@@ -95,7 +119,7 @@ export const initAstroTypedoc = async ({
     await app.generateDocs(project, outputFolder)
   }
   let generateNavigationJSON = async (project, outputFolder) => {
-    let navigation = getNavigationFromProject(baseUrl, project)
+    let navigation = buildNavigationFromProjectReflection(baseUrl, project)
 
     await writeFile(
       `${removeTrailingSlash(outputFolder)}/nav.json`,
