@@ -6,22 +6,59 @@ const { nav } = Astro.props
   nav?.modules.length && (
     <nav class="navigation">
       {nav.modules.map(mod => (
-        <div>
-          Module: {mod.name} <br />
+        <div class="nav-block">
+          <p class="nav-block-title">{mod.name}</p>
           {mod.items.map(modItem => (
-            <div>
-              <a href={modItem.url}>{modItem.title} </a>
-            </div>
+            <a
+              class:list={[
+                'nav-item',
+                { 'is-active': Astro.url.pathname === modItem.url }
+              ]}
+              href={modItem.url}
+            >
+              {modItem.title}{' '}
+            </a>
           ))}
         </div>
       ))}
     </nav>
   )
 }
+
 <style>
   .navigation {
     display: flex;
     flex-direction: column;
-    grid-area: sidebar;
+    position: fixed;
+    overflow: auto;
+    bottom: 0;
+    top: 0;
+    padding: 12px 0;
+    width: 250px;
+  }
+
+  .nav-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .nav-block-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+    color: rgb(82, 82, 91);
+    text-decoration: none;
+    padding: 4px 12px 4px 16px;
+  }
+
+  .nav-item:hover,
+  .nav-item.is-active {
+    background-color: rgb(229, 231, 235);
+    color: rgb(24, 24, 27);
+    border-radius: 4px;
   }
 </style>
