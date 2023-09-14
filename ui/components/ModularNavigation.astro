@@ -1,11 +1,17 @@
 ---
 const { nav } = Astro.props
+const preparedModules = [...nav.modules].reverse().map(mod => ({
+  ...mod,
+  items: mod.items.sort(({ title: title1 }, { title: title2 }) =>
+    title1.localeCompare(title2)
+  )
+}))
 ---
 
 {
-  nav?.modules.length && (
+  preparedModules?.length && (
     <nav class="navigation">
-      {nav.modules.map(mod => (
+      {preparedModules.map(mod => (
         <div class="nav-block">
           <p class="nav-block-title">{mod.name}</p>
           {mod.items.map(modItem => (
