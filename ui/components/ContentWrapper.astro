@@ -1,10 +1,23 @@
 ---
 ---
 
-<main><slot /></main>
+<main>
+  <div class="markdown">
+    <slot />
+  </div>
+</main>
 
 <style>
   main {
     grid-area: content;
+    padding: 16px;
+    font-size: 16px;
+  }
+</style>
+
+<style is:global>
+  .markdown .astro-code {
+    padding: 24px 16px;
+    border-radius: 4px;
   }
 </style>

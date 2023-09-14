@@ -1,12 +1,21 @@
 ---
 const { nav } = Astro.props
+const sortedItems = [...nav.items].sort(
+  ({ title: title1 }, { title: title2 }) => title1.localeCompare(title2)
+)
 ---
 
 {
-  nav?.items.length && (
+  sortedItems?.length && (
     <nav class="navigation">
-      {nav.items.map(navItem => (
-        <a href={navItem.url}>{navItem.title} </a>
+      {sortedItems.map(navItem => (
+        <a
+          class="nav-item"
+          class:list={[{ 'is-active': Astro.url.pathname === navItem.url }]}
+          href={navItem.url}
+        >
+          {navItem.title}
+        </a>
       ))}
     </nav>
   )
@@ -15,5 +24,25 @@ const { nav } = Astro.props
   .navigation {
     display: flex;
     flex-direction: column;
+    position: fixed;
+    overflow: auto;
+    bottom: 0;
+    top: 0;
+    padding: 12px 0;
+    width: 250px;
+  }
+
+  .nav-item {
+    font-size: 14px;
+    color: rgb(82, 82, 91);
+    text-decoration: none;
+    padding: 4px 12px 4px 16px;
+  }
+
+  .nav-item:hover,
+  .nav-item.is-active {
+    background-color: rgb(229, 231, 235);
+    color: rgb(24, 24, 27);
+    border-radius: 4px;
   }
 </style>
