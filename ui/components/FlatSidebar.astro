@@ -1,0 +1,19 @@
+---
+const { nav } = Astro.props
+---
+
+{
+  nav?.items.length && (
+    <nav class="navigation">
+      {nav.items.map(navItem => (
+        <a href={navItem.url}>{navItem.title} </a>
+      ))}
+    </nav>
+  )
+}
+<style>
+  .navigation {
+    display: flex;
+    flex-direction: column;
+  }
+</style>

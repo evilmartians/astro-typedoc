@@ -15,23 +15,32 @@ const objectToFrontmatter = (object = {}) =>
     .map(([key, value]) => `${key}: ${value}`)
     .join('\n')
 
-const onRendererPageEnd = frontmatterObject => event => {
-  if (!event.contents) {
-    return
-  } else if (/README\.md$/.test(event.url)) {
-    event.preventDefault()
-    return
-  }
+const onRendererPageEnd =
+  (frontmatterObject = {}) =>
+  event => {
+    if (!event.contents) {
+      return
+    } else if (/README\.md$/.test(event.url)) {
+      event.preventDefault()
+      return
+    }
 
-  let prependix = `---
+    if (!frontmatterObject?.layout) {
+      frontmatterObject.layout = resolve(
+        __dirname,
+        './ui/components/Layout.astro'
+      )
+    }
+
+    let prependix = `---
 title: '${event.model.name}'
 ${objectToFrontmatter(frontmatterObject)}
 ---
 
 `
 
-  event.contents = prependix + event.contents
-}
+    event.contents = prependix + event.contents
+  }
 
 const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
@@ -155,6 +164,11 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
 
     await writeFile(
       `${removeTrailingSlash(outputFolder)}/nav.json`,
+      JSON.stringify(navigation)
+    )
+    // Place nav file dupe to the defaul theme
+    await writeFile(
+      `${resolve(__dirname, './ui/')}/nav.json`,
       JSON.stringify(navigation)
     )
   }
