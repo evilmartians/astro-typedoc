@@ -52,5 +52,7 @@ import nav from '../nav.json'
 </style>
 
 <script>
-  document.querySelector('.nav-item.is-active')?.scrollIntoView()
+  document
+    .querySelector('.nav-item.is-active')
+    ?.scrollIntoView({ block: 'center' })
 </script>
