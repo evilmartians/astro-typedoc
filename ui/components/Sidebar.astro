@@ -1,31 +1,19 @@
 ---
-const { nav } = Astro.props
+import FlatNavigation from './FlatNavigation.astro'
+import ModularNavigation from './ModularNavigation.astro'
+
+import nav from '../nav.json'
 ---
 
 {
-  nav?.modules.length && (
-    <nav class="navigation">
-      {nav.modules.map(mod => (
-        <div class="nav-block">
-          <p class="nav-block-title">{mod.name}</p>
-          {mod.items.map(modItem => (
-            <a
-              class:list={[
-                'nav-item',
-                { 'is-active': Astro.url.pathname === modItem.url }
-              ]}
-              href={modItem.url}
-            >
-              {modItem.title}{' '}
-            </a>
-          ))}
-        </div>
-      ))}
-    </nav>
+  nav.type === 'flat' ? (
+    <FlatNavigation nav={nav} />
+  ) : (
+    <ModularNavigation nav={nav} />
   )
 }
 
-<style>
+<style is:global>
   .navigation {
     display: flex;
     flex-direction: column;

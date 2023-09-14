@@ -1,22 +1,14 @@
 ---
-import FlatSidebar from './FlatSidebar.astro'
-import ModularSidebar from './ModularSidebar.astro'
 import Header from './Header.astro'
 import ContentWrapper from './ContentWrapper.astro'
 import '../styles/style.css'
 
-import nav from '../nav.json'
+import Sidebar from './Sidebar.astro'
 ---
 
 <div class="layout">
   <Header />
-  {
-    nav.type === 'flat' ? (
-      <FlatSidebar nav={nav} />
-    ) : (
-      <ModularSidebar nav={nav} />
-    )
-  }
+  <Sidebar />
   <ContentWrapper>
     <slot />
   </ContentWrapper>
