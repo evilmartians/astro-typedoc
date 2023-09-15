@@ -40,4 +40,6 @@ class CustomMarkdownThemeContext extends MarkdownThemeRenderContext {
 
     return constructedUrl
   }
+
+  sources = () => ''
 }

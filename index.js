@@ -34,6 +34,8 @@ const onRendererPageEnd =
 
     let prependix = `---
 title: '${event.model.name}'
+sources:
+${event.model?.sources.map(source => `  - ${source.url}`).join('\n')}
 ${objectToFrontmatter(frontmatterObject)}
 ---
 
