@@ -1,5 +1,5 @@
 ---
-import Sidebar from '../components/Sidebar.astro'
+import Sidebar from '../../../../ui/components/Sidebar.astro'
 
 const { frontmatter } = Astro.props
 const { title } = frontmatter
@@ -13,7 +13,6 @@ const { title } = frontmatter
   </head>
   <body>
     <div class="layout">
-      <Sidebar />
       <main>
         <h1>{title}</h1>
         <article>
