@@ -4,7 +4,7 @@ const { frontmatter } = Astro.props
 
 <main>
   <div class="markdown">
-    <h1>{frontmatter.title}</h1>
+    <h1>{frontmatter?.title}</h1>
     <slot />
   </div>
 </main>
