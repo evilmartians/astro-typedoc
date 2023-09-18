@@ -1,8 +1,10 @@
 ---
+const { frontmatter } = Astro.props
 ---
 
 <main>
   <div class="markdown">
+    <h1>{frontmatter.title}</h1>
     <slot />
   </div>
 </main>
@@ -16,9 +18,18 @@
 </style>
 
 <style is:global>
+  .markdown {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
   .markdown .astro-code {
     padding: 24px 16px;
     border-radius: 4px;
+  }
+
+  .markdown h1 {
+    margin-bottom: 16px;
   }
 
   .markdown h2 {
@@ -26,7 +37,12 @@
     margin-bottom: 24px;
   }
 
+  .markdown h3 {
+    margin-bottom: 12px;
+  }
+
   .markdown table {
+    width: 100%;
     margin-bottom: 16px;
     border-collapse: collapse;
   }
@@ -56,10 +72,6 @@
     background: rgba(211, 211, 211, 1);
   }
 
-  .markdown a code {
-    color: black;
-  }
-
   .markdown a {
     color: black;
     text-decoration: underline;
@@ -67,5 +79,12 @@
 
   .markdown blockquote {
     margin-bottom: 16px;
+  }
+
+  .markdown hr {
+    display: block;
+    margin: 24px 0;
+    border: none;
+    border-top: 1px solid lightgray;
   }
 </style>

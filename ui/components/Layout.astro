@@ -5,12 +5,13 @@ import '../styles/normalize.css'
 import '../styles/style.css'
 
 import Sidebar from './Sidebar.astro'
+const { frontmatter } = Astro.props
 ---
 
 <div class="layout">
   <Header />
   <Sidebar />
-  <ContentWrapper>
+  <ContentWrapper frontmatter={frontmatter}>
     <slot />
   </ContentWrapper>
 </div>
