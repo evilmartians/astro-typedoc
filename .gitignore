@@ -5,4 +5,3 @@ coverage/
 test/website-*/src/pages/docs/**/*
 test/website-*/src/nav.json
 tsconfig.generic.json
-ui/nav.json
