@@ -16,6 +16,13 @@ const objectToFrontmatter = (object = {}) =>
     .join('\n')
 
 const onRendererPageEnd = frontmatterObject => event => {
+  if (typeof frontmatterObject?.layout === 'undefined') {
+    frontmatterObject.layout = resolve(
+      __dirname,
+      './ui/components/Layout.astro'
+    )
+  }
+
   if (!event.contents) {
     return
   } else if (/README\.md$/.test(event.url)) {
@@ -157,6 +164,7 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
       `${removeTrailingSlash(outputFolder)}/nav.json`,
       JSON.stringify(navigation)
     )
+    await writeFile(resolve(__dirname, './ui/nav.json'))
   }
 
   return {
