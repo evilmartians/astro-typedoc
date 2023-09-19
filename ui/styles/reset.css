@@ -28,8 +28,3 @@ button {
   background-image: none;
   overflow: visible;
 }
-
-a,
-button {
-  outline: none;
-}
