@@ -18,7 +18,6 @@ await astroTypedoc.generateDocs({
   outputFolder: 'src/pages/docs',
   project
 })
-await astroTypedoc.generateNavigationJSON(project, resolve(__dirname, './src/'))
 
 // https://astro.build/config
 export default defineConfig({})
