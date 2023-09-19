@@ -158,16 +158,18 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
     app.renderer.on(PageEvent.END, onRendererPageEnd(frontmatter))
 
     await app.generateDocs(project, outputFolder)
+
+    let navigation = buildNavigationFromProjectReflection(baseUrl, project)
+    await writeFile(
+      resolve(__dirname, './ui/nav.json'),
+      JSON.stringify(navigation)
+    )
   }
   let generateNavigationJSON = async (project, outputFolder) => {
     let navigation = buildNavigationFromProjectReflection(baseUrl, project)
 
     await writeFile(
       `${removeTrailingSlash(outputFolder)}/nav.json`,
-      JSON.stringify(navigation)
-    )
-    await writeFile(
-      resolve(__dirname, './ui/nav.json'),
       JSON.stringify(navigation)
     )
   }
