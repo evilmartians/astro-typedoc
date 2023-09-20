@@ -4,28 +4,34 @@ import nav from '../nav.json'
 
 {
   nav?.modules?.length ? (
-    <nav class="navigation">
+    <nav class="at-navigation">
       {nav.modules.map(mod => (
-        <div>
+        <div class="at-module-wrapper">
           Module: {mod.name} <br />
           {mod.items.map(modItem => (
-            <div>
-              <a href={modItem.url}>{modItem.title} </a>
+            <div class="at-module-items">
+              <a class="at-nav-item" href={modItem.url}>
+                {modItem.title}
+              </a>
             </div>
           ))}
         </div>
       ))}
     </nav>
   ) : (
-    <nav class="navigation">
+    <nav class="at-navigation">
       {nav.items.map(item => {
-        return <a href={item.url}>{item.title}</a>
+        return (
+          <a class="at-nav-item" href={item.url}>
+            {item.title}
+          </a>
+        )
       })}
     </nav>
   )
 }
 <style>
-  .navigation {
+  .at-navigation {
     display: flex;
     flex-direction: column;
   }

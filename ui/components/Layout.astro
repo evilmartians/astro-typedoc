@@ -12,11 +12,11 @@ const { frontmatter } = Astro.props
     <title>{frontmatter?.title}</title>
   </head>
   <body>
-    <div class="layout">
-      <div class="sidebar">
+    <div class="at-layout">
+      <div class="at-sidebar">
         <Navigation />
       </div>
-      <div class="content">
+      <div class="at-content">
         <slot />
       </div>
     </div>
@@ -24,7 +24,7 @@ const { frontmatter } = Astro.props
 </html>
 
 <style>
-  .layout {
+  .at-layout {
     display: grid;
     grid-template-columns: 200px auto;
   }
