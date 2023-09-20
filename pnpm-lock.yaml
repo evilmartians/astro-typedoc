@@ -61,6 +61,12 @@ importers:
         specifier: ^0.5.6
         version: 0.5.6
 
+  test/website-custom-layout:
+    dependencies:
+      astro:
+        specifier: ^3.1.1
+        version: 3.1.1
+
   test/website-nanostores:
     dependencies:
       astro:

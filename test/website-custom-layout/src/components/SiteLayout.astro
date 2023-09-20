@@ -1,0 +1,13 @@
+---
+import Navigation from './Navigation.astro'
+import Header from './Header.astro'
+---
+
+<head>
+  <title>Custom Layout</title>
+</head>
+<Header />
+<div class="layout">
+  <Navigation />
+  <slot />
+</div>

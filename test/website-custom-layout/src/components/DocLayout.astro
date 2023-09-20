@@ -1,0 +1,18 @@
+---
+import SiteLayout from './SiteLayout.astro'
+import '../../../../ui/styles/md/table.css'
+---
+
+<SiteLayout>
+  <main class="at-markdown">
+    <slot />
+  </main>
+</SiteLayout>
+
+<style>
+  :root {
+    --at-border-color: orange;
+    --at-table-link-bg: lightyellow;
+    --at-table-link-hover-bg: yellow;
+  }
+</style>

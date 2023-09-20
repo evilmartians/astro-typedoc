@@ -6,3 +6,4 @@ packages:
   # Astro site for nanostores project (multiple entrypoints)
   - 'test/website-nanostores-multiple-ep'
   - 'test/website-semi-custom-layout'
+  - 'test/website-custom-layout'
