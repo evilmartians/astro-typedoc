@@ -25,6 +25,10 @@ const onRendererPageEnd =
       )
     }
 
+    if (frontmatterObject?.layout === null) {
+      delete frontmatterObject.layout
+    }
+
     if (!event.contents) {
       return
     } else if (/README\.md$/.test(event.url)) {
