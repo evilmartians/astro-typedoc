@@ -103,6 +103,7 @@ const typedocConfig = {
 }
 
 const markdownPluginConfig = {
+  cleanOutputDir: false,
   hideBreadcrumbs: true,
   hideInPageTOC: true,
   hidePageHeader: true,
