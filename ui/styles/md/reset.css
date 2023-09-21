@@ -1,26 +1,26 @@
-h1,
-h2,
-h3,
-figure,
-p,
-blockquote,
-dl,
-dd {
+.at-markdown h1,
+.at-markdown h2,
+.at-markdown h3,
+.at-markdown figure,
+.at-markdown p,
+.at-markdown blockquote,
+.at-markdown dl,
+.at-markdown dd {
   margin: 0;
 }
 
-ol,
-ul {
+.at-markdown ol,
+.at-markdown ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-a {
+.at-markdown a {
   text-decoration: none;
 }
 
-button {
+.at-markdown button {
   font-family: inherit;
   padding: 0;
   border: 0;

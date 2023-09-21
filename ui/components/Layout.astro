@@ -1,5 +1,7 @@
 ---
 import Navigation from './Navigation.astro'
+import '../styles/md/reset.css'
+import '../styles/md/table.css'
 
 const { frontmatter } = Astro.props
 ---
@@ -16,7 +18,7 @@ const { frontmatter } = Astro.props
       <div class="at-sidebar">
         <Navigation />
       </div>
-      <div class="at-content">
+      <div class="at-markdown">
         <slot />
       </div>
     </div>
