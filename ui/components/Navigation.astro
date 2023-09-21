@@ -1,38 +1,13 @@
 ---
 import nav from '../nav.json'
+import ModularNavigation from './ModularNavigation.astro'
+import FlatNavigation from './FlatNavigation.astro'
 ---
 
 {
   nav?.modules?.length ? (
-    <nav class="at-navigation">
-      {nav.modules.map(mod => (
-        <div class="at-module-wrapper">
-          Module: {mod.name} <br />
-          {mod.items.map(modItem => (
-            <div class="at-module-items">
-              <a class="at-nav-item" href={modItem.url}>
-                {modItem.title}
-              </a>
-            </div>
-          ))}
-        </div>
-      ))}
-    </nav>
+    <ModularNavigation nav={nav} />
   ) : (
-    <nav class="at-navigation">
-      {nav.items.map(item => {
-        return (
-          <a class="at-nav-item" href={item.url}>
-            {item.title}
-          </a>
-        )
-      })}
-    </nav>
+    <FlatNavigation nav={nav} />
   )
 }
-<style>
-  .at-navigation {
-    display: flex;
-    flex-direction: column;
-  }
-</style>
