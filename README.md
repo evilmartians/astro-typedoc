@@ -148,6 +148,7 @@ What's included:
 - `reset.css` - defaults for Markdown content styles
 - `code.css` - adds styling to a code block
 - `table.css` - styling for parameter tables
+- `markdown-margins.css` - default Markdown inner spacing
 
 Please, make sure that your Markdown content is wrapped by element with the `at-markdown` class name.
 
