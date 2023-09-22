@@ -2,9 +2,89 @@
 
 Utility for generating Astro pages from `TypeDoc`.
 
+## Usage
+
+### Basic example
+
+Minimal config:
+
+```js
+// astro.config.mjs
+
+import { defineConfig } from 'astro/config'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+import initAstroTypedoc from 'astro-typedoc'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const astroTypedoc = await initAstroTypedoc({
+  baseUrl: '/docs/',
+  entryPoints: [resolve(__dirname, 'path/to/entry/point.ts')],
+  tsconfig: resolve(__dirname, 'path/to/tsconfig.json')
+})
+
+const typedocProject = await astroTypedoc.getReflections()
+
+await astroTypedoc.generateDocs(typedocProject, 'src/pages/docs')
+await astroTypedoc.generateNavigationJSON(
+  reflections,
+  resolve(__dirname, './src/')
+)
+
+// https://astro.build/config
+export default defineConfig({})
+```
+
+## API
+
+### `initAstroTypedoc({ baseUrl, entryPoints, tsconfig })`
+
+Creates `astroTypedoc` instance. Accepts config object as a parameter.
+
+#### `baseUrl`
+
+Defines the root path for generated documentation.
+`/docs/` means that documentation root is accessible on
+`example.com/docs/`
+
+#### `entryPoints`
+
+An array of paths to entry points of the project.
+
+#### `tsconfig`
+
+Path to `tsconfig.json` of the project, which code will be documented.
+
+### `astroTypedoc.getReflections`
+
+Returns [TypeDoc project reflection](https://typedoc.org/api/classes/Models.ProjectReflection.html)
+
+Project reflection contains information about types and serves as the basis for creating documentation.
+
+### `astroTypedoc.generateDocs(typedocProject, outputFolder)`
+
+Generates documentation.
+
+### `astroTypedoc.generateNavigationJSON(typedocProject, outputFolder)`
+
+Generates JSON file which contains navigation tree for generated documentation.
+
+Sample:
+
+```json
+[
+  {
+    "title": "Atom",
+    "url": "/docs/interfaces/interface.Atom"
+  }
+]
+```
+
 ## Testing
 
-There are 3 subfolders is `test/` folder.
+There are 3 subfolders in `test/` folder.
 
 1. `types` - this is a stub TypeScript project, contains types, which are used for generating docs
 2. `website-types` - a sample site which is generated from `types/` publicly exported types
