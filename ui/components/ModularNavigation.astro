@@ -31,7 +31,6 @@ const preparedModules = [...nav.modules].reverse().map(mod => ({
   )
 }
 
-
 <style is:global>
   .at-navigation {
     display: flex;
@@ -39,6 +38,7 @@ const preparedModules = [...nav.modules].reverse().map(mod => ({
     overflow: auto;
     padding: 12px 0;
     width: 250px;
+    border-right: 1px solid rgb(229, 231, 235);
   }
 
   .at-navigation-module {
@@ -72,6 +72,5 @@ const preparedModules = [...nav.modules].reverse().map(mod => ({
     .querySelector('.at-navigation-item.at-is-active')
     ?.scrollIntoView({ block: 'center' })
 
-  window.scrollTo(0,0)
-
+  window.scrollTo(0, 0)
 </script>
