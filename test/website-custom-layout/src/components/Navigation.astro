@@ -1,0 +1,19 @@
+---
+import nav from '../nav.json'
+---
+
+<nav>
+  {
+    nav.items.map(navItem => {
+      return <a href={navItem.url}>{navItem.title}</a>
+    })
+  }
+</nav>
+
+<style>
+  nav {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+  }
+</style>

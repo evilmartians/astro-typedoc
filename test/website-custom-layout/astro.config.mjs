@@ -15,9 +15,14 @@ const astroTypedoc = await initAstroTypedoc({
 const project = await astroTypedoc.getReflections()
 
 await astroTypedoc.generateDocs({
+  frontmatter: {
+    layout: resolve(__dirname, './src/components/DocLayout.astro')
+  },
   outputFolder: 'src/pages/docs',
   project
 })
+
+await astroTypedoc.generateNavigationJSON(project, resolve(__dirname, './src/'))
 
 // https://astro.build/config
 export default defineConfig({})

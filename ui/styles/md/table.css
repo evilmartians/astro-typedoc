@@ -1,0 +1,36 @@
+:root {
+  --at-border-color: lightgrey;
+  --at-table-link-bg: rgba(211, 211, 211, 0.7);
+  --at-table-link-hover-bg: rgba(211, 211, 211, 1);
+}
+
+.at-markdown table {
+  width: 100%;
+  margin-bottom: 16px;
+  border-collapse: collapse;
+}
+
+.at-markdown td,
+.at-markdown th {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--at-border-color);
+}
+
+.at-markdown table th + th,
+.at-markdown table td + td {
+  padding-left: 51px;
+}
+
+.at-markdown table a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 4px;
+  background: var(--at-table-link-bg);
+  transition: background 0.3s ease;
+  color: black;
+  border-radius: 4px;
+}
+
+.at-markdown table a:hover {
+  background: var(--at-table-link-hover-bg);
+}

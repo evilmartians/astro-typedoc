@@ -1,0 +1,76 @@
+---
+const { nav } = Astro.props
+const preparedModules = [...nav.modules].reverse().map(mod => ({
+  ...mod,
+  items: mod.items.sort(({ title: title1 }, { title: title2 }) =>
+    title1.localeCompare(title2)
+  )
+}))
+---
+
+{
+  preparedModules?.length && (
+    <nav class="at-navigation">
+      {preparedModules.map(mod => (
+        <div class="at-navigation-module">
+          <p class="at-navigation-module-title">{mod.name}</p>
+          {mod.items.map(modItem => (
+            <a
+              class:list={[
+                'at-navigation-item',
+                { 'at-is-active': Astro.url.pathname === modItem.url }
+              ]}
+              href={modItem.url}
+            >
+              {modItem.title}
+            </a>
+          ))}
+        </div>
+      ))}
+    </nav>
+  )
+}
+
+<style is:global>
+  .at-navigation {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    padding: 12px 0;
+    width: 250px;
+    border-right: 1px solid rgb(229, 231, 235);
+  }
+
+  .at-navigation-module {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 16px;
+  }
+
+  .at-navigation-module-title {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .at-navigation-item {
+    font-size: 14px;
+    color: rgb(82, 82, 91);
+    text-decoration: none;
+    padding: 4px 12px 4px 16px;
+  }
+
+  .at-navigation-item:hover,
+  .at-navigation-item.at-is-active {
+    background-color: rgb(229, 231, 235);
+    color: rgb(24, 24, 27);
+    border-radius: 4px;
+  }
+</style>
+
+<script>
+  document
+    .querySelector('.at-navigation-item.at-is-active')
+    ?.scrollIntoView({ block: 'center' })
+
+  window.scrollTo(0, 0)
+</script>

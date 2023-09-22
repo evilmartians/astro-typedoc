@@ -1,0 +1,13 @@
+---
+import nav from '../nav.json'
+import ModularNavigation from './ModularNavigation.astro'
+import FlatNavigation from './FlatNavigation.astro'
+---
+
+{
+  nav?.modules?.length ? (
+    <ModularNavigation nav={nav} />
+  ) : (
+    <FlatNavigation nav={nav} />
+  )
+}

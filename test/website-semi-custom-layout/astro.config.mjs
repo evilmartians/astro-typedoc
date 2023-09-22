@@ -15,6 +15,9 @@ const astroTypedoc = await initAstroTypedoc({
 const project = await astroTypedoc.getReflections()
 
 await astroTypedoc.generateDocs({
+  frontmatter: {
+    layout: resolve(__dirname, './src/components/DocLayout.astro')
+  },
   outputFolder: 'src/pages/docs',
   project
 })

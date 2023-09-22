@@ -15,23 +15,38 @@ const objectToFrontmatter = (object = {}) =>
     .map(([key, value]) => `${key}: ${value}`)
     .join('\n')
 
-const onRendererPageEnd = frontmatterObject => event => {
-  if (!event.contents) {
-    return
-  } else if (/README\.md$/.test(event.url)) {
-    event.preventDefault()
-    return
-  }
+const onRendererPageEnd =
+  (frontmatterObject = {}) =>
+  event => {
+    if (typeof frontmatterObject?.layout === 'undefined') {
+      frontmatterObject.layout = resolve(
+        __dirname,
+        './ui/components/Layout.astro'
+      )
+    }
 
-  let prependix = `---
+    if (frontmatterObject?.layout === null) {
+      delete frontmatterObject.layout
+    }
+
+    if (!event.contents) {
+      return
+    } else if (/README\.md$/.test(event.url)) {
+      event.preventDefault()
+      return
+    }
+
+    let prependix = `---
 title: '${event.model.name}'
+sources:
+${event.model?.sources.map(source => `  - ${source.url}`).join('\n')}
 ${objectToFrontmatter(frontmatterObject)}
 ---
 
 `
 
-  event.contents = prependix + event.contents
-}
+    event.contents = prependix + event.contents
+  }
 
 const buildNavigationFromProjectReflection = (baseUrl = '', project) => {
   let baseUrlWithoutTrailingSlash = baseUrl.replace(/\/$/gm, '')
@@ -94,6 +109,7 @@ const typedocConfig = {
 }
 
 const markdownPluginConfig = {
+  cleanOutputDir: false,
   hideBreadcrumbs: true,
   hideInPageTOC: true,
   hidePageHeader: true,
@@ -149,6 +165,12 @@ export const initAstroTypedoc = async ({ baseUrl = '/docs/', entryPoints }) => {
     app.renderer.on(PageEvent.END, onRendererPageEnd(frontmatter))
 
     await app.generateDocs(project, outputFolder)
+
+    let navigation = buildNavigationFromProjectReflection(baseUrl, project)
+    await writeFile(
+      resolve(__dirname, './ui/nav.json'),
+      JSON.stringify(navigation)
+    )
   }
   let generateNavigationJSON = async (project, outputFolder) => {
     let navigation = buildNavigationFromProjectReflection(baseUrl, project)
